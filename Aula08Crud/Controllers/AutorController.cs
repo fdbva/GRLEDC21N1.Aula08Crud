@@ -41,11 +41,13 @@ namespace Aula08Crud.Controllers
         // GET: AutorController/Details/5
         public ActionResult Details(int id)
         {
-            foreach (var autor in Autores.Where(autor => autor.Id == id))
+            foreach (var autor in Autores)
             {
-                return View(autor);
+                if (autor.Id == id)
+                {
+                    return View(autor);
+                }
             }
-
             return RedirectToAction(nameof(Index));
         }
 

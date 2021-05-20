@@ -77,16 +77,37 @@ namespace Aula08Crud.Controllers
         // GET: AutorController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            foreach (var autor in Autores)
+            {
+                if (autor.Id == id)
+                {
+                    return View(autor);
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: AutorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit([FromRoute]int id, AutorModel autorModel)
         {
             try
             {
+                foreach (var autor in Autores)
+                {
+                    if (autor.Id == autorModel.Id)
+                    {
+                        autor.Nacionalidade = autorModel.Nacionalidade;
+                        autor.Nome = autorModel.Nome;
+                        autor.UltimoNome = autorModel.UltimoNome;
+                        autor.Nascimento = autorModel.Nascimento;
+                        autor.QuantidadeLivrosPublicados = autorModel.QuantidadeLivrosPublicados;
+
+                        //return View("Details", autor);
+                        return RedirectToAction(nameof(Details), new { id = autor.Id });
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -98,16 +119,37 @@ namespace Aula08Crud.Controllers
         // GET: AutorController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            foreach (var autor in Autores)
+            {
+                if (autor.Id == id)
+                {
+                    return View(autor);
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: AutorController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeleteFromMemory(int id)
         {
             try
             {
+                AutorModel autorEncontrado = null;
+                foreach (var autor in Autores)
+                {
+                    if (autor.Id == id)
+                    {
+                        autorEncontrado = autor;
+                    }
+                }
+
+                if (autorEncontrado != null)
+                {
+                    Autores.Remove(autorEncontrado);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch

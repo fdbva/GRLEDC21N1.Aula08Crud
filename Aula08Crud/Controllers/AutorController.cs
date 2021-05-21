@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Aula08Crud.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aula08Crud.Controllers
@@ -105,7 +102,7 @@ namespace Aula08Crud.Controllers
                         autor.QuantidadeLivrosPublicados = autorModel.QuantidadeLivrosPublicados;
 
                         //return View("Details", autor);
-                        return RedirectToAction(nameof(Details), new { id = autor.Id });
+                        return RedirectToAction(nameof(Details), autor.Id );
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -154,7 +151,7 @@ namespace Aula08Crud.Controllers
             }
             catch
             {
-                return View();
+                return View("Error");
             }
         }
     }

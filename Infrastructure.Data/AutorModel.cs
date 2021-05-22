@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Aula08Crud.Models
+namespace Infrastructure.Data
 {
     public class AutorModel
     {

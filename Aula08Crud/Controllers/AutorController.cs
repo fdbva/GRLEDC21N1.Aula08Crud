@@ -1,50 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using Aula08Crud.Models;
+﻿using Infrastructure.Data;
+using Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aula08Crud.Controllers
 {
     public class AutorController : Controller
     {
-        private static List<AutorModel> Autores { get; } = new List<AutorModel>
+        private readonly AutorInMemoryRepository _autorRepository;
+
+        public AutorController()
         {
-            new AutorModel
-            {
-                Id = 0,
-                Nome = "Felipe",
-                UltimoNome = "Andrade",
-                Nacionalidade = "Brasileiro",
-                Nascimento = new DateTime(1988, 02, 23),
-                QuantidadeLivrosPublicados = 0
-            },
-            new AutorModel
-            {
-                Id = 1,
-                Nome = "Felipe2",
-                UltimoNome = "Andrade2",
-                Nacionalidade = "Brasileiro2",
-                Nascimento = new DateTime(2000, 02, 23),
-                QuantidadeLivrosPublicados = 0
-            }
-        };
+            _autorRepository = new AutorInMemoryRepository();
+        }
 
         // GET: AutorController
         public ActionResult Index()
         {
-            return View(Autores);
+            var autores = _autorRepository.GetAll();
+
+            return View(autores);
         }
 
         // GET: AutorController/Details/5
         public ActionResult Details(int id)
         {
-            foreach (var autor in Autores)
+            var autor = _autorRepository.GetById(id);
+
+            if (autor != null)
             {
-                if (autor.Id == id)
-                {
-                    return View(autor);
-                }
+                return View(autor);
             }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -61,7 +47,7 @@ namespace Aula08Crud.Controllers
         {
             try
             {
-                Autores.Add(autorModel);
+                _autorRepository.Create(autorModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -74,37 +60,30 @@ namespace Aula08Crud.Controllers
         // GET: AutorController/Edit/5
         public ActionResult Edit(int id)
         {
-            foreach (var autor in Autores)
+            var autor = _autorRepository.GetById(id);
+
+            if (autor != null)
             {
-                if (autor.Id == id)
-                {
-                    return View(autor);
-                }
+                return View(autor);
             }
+
             return RedirectToAction(nameof(Index));
         }
 
         // POST: AutorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([FromRoute]int id, AutorModel autorModel)
+        public ActionResult Edit(AutorModel autorModel)
         {
             try
             {
-                foreach (var autor in Autores)
-                {
-                    if (autor.Id == autorModel.Id)
-                    {
-                        autor.Nacionalidade = autorModel.Nacionalidade;
-                        autor.Nome = autorModel.Nome;
-                        autor.UltimoNome = autorModel.UltimoNome;
-                        autor.Nascimento = autorModel.Nascimento;
-                        autor.QuantidadeLivrosPublicados = autorModel.QuantidadeLivrosPublicados;
+                var autorEditado = _autorRepository.Edit(autorModel);
 
-                        //return View("Details", autor);
-                        return RedirectToAction(nameof(Details), autor.Id );
-                    }
+                if (autorEditado != null)
+                {
+                    return RedirectToAction(nameof(Details), new { id = autorEditado.Id });
                 }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -116,13 +95,13 @@ namespace Aula08Crud.Controllers
         // GET: AutorController/Delete/5
         public ActionResult Delete(int id)
         {
-            foreach (var autor in Autores)
+            var autor = _autorRepository.GetById(id);
+
+            if (autor != null)
             {
-                if (autor.Id == id)
-                {
-                    return View(autor);
-                }
+                return View(autor);
             }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -133,19 +112,7 @@ namespace Aula08Crud.Controllers
         {
             try
             {
-                AutorModel autorEncontrado = null;
-                foreach (var autor in Autores)
-                {
-                    if (autor.Id == id)
-                    {
-                        autorEncontrado = autor;
-                    }
-                }
-
-                if (autorEncontrado != null)
-                {
-                    Autores.Remove(autorEncontrado);
-                }
+                _autorRepository.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }

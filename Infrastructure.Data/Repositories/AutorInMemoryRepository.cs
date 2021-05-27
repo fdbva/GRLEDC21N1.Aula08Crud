@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Infrastructure.Data.Repositories
 {
@@ -27,9 +28,20 @@ namespace Infrastructure.Data.Repositories
             }
         };
 
-        public IEnumerable<AutorModel> GetAll()
+        public IEnumerable<AutorModel> GetAll(
+            string search = null)
         {
-            return Autores;
+            if (search == null)
+            {
+                return Autores;
+            }
+
+            var resultByLinq = Autores
+                .Where(x =>
+                    x.Nome.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    x.UltimoNome.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+            return resultByLinq;
         }
 
         public AutorModel GetById(int id)

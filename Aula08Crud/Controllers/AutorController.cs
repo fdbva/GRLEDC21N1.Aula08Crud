@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data;
+﻿using System.Linq;
+using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,13 @@ namespace Aula08Crud.Controllers
         }
 
         // GET: AutorController
-        public ActionResult Index()
+        public ActionResult Index(
+            string search = null)
         {
-            var autores = _autorRepository.GetAll();
+            var autores = _autorRepository.GetAll(search);
+
+            //ViewBag.Search = search;
+            ViewData["Search"] = search;
 
             return View(autores);
         }

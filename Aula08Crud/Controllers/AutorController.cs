@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Aula08Crud.ViewModels;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +21,13 @@ namespace Aula08Crud.Controllers
         {
             var autores = _autorRepository.GetAll(search);
 
-            //ViewBag.Search = search;
-            ViewData["Search"] = search;
+            var autorIndexViewModel = new AutorIndexViewModel
+            {
+                Search = search,
+                Autores = autores
+            };
 
-            return View(autores);
+            return View(autorIndexViewModel);
         }
 
         // GET: AutorController/Details/5

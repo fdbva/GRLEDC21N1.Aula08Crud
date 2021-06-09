@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Infrastructure.Data.AutorModel>
+﻿@model Aula08Crud.ViewModels.AutorIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -6,39 +6,45 @@
 
 <h1>Search</h1>
 <form asp-action="Index">
-    <input type="text" value="@ViewData["Search"]" name="search"/>
+    <input type="text" value="@Model.Search" name="search"/>
     <button>go!</button>
 </form>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@{
+    if (Model.Autores == null || !Model.Autores.Any())
+    {
+        return;
+    }
+}
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Autores.First().Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nome)
+                @Html.DisplayNameFor(model => model.Autores.First().Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UltimoNome)
+                @Html.DisplayNameFor(model => model.Autores.First().UltimoNome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nacionalidade)
+                @Html.DisplayNameFor(model => model.Autores.First().Nacionalidade)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QuantidadeLivrosPublicados)
+                @Html.DisplayNameFor(model => model.Autores.First().QuantidadeLivrosPublicados)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nascimento)
+                @Html.DisplayNameFor(model => model.Autores.First().Nascimento)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Autores) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Infrastructure.Data.Repositories
 {
@@ -57,8 +58,13 @@ namespace Infrastructure.Data.Repositories
             return null;
         }
 
+        private static int _id = Autores.Max(x => x.Id);
+        private int Id => Interlocked.Increment(ref _id);
+
         public AutorModel Create(AutorModel autorModel)
         {
+            autorModel.Id = Id;
+
             Autores.Add(autorModel);
 
             //TODO: auto-increment Id e atualizar para o retorno

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Models
 {
     public class AutorModel
     {

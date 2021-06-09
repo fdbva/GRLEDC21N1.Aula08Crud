@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Infrastructure.Data.Models;
 
 namespace Infrastructure.Data.Repositories
 {

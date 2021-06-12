@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Infrastructure.Data.Models;
 using Microsoft.Data.SqlClient;
 
@@ -12,8 +9,8 @@ namespace Infrastructure.Data.Repositories
     public class AutorSqlServerRepository
     {
         private const string ConnectionString =
-            @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=GRLEDC21N1sql;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
+            //@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=GRLEDC21N1sql;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\projects\GRLEDC21N1\Aula08Crud\Infrastructure.Data\AppData\GRLEDC21N1.mdf;Integrated Security=True";
         //TODO: Adicionar arquivo do banco dentro do projeto e do git
         public IEnumerable<AutorModel> GetAll(string search = null)
         {

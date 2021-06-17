@@ -12,7 +12,9 @@ namespace Infrastructure.Data.Repositories
             //@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=GRLEDC21N1sql;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\projects\GRLEDC21N1\Aula08Crud\Infrastructure.Data\AppData\GRLEDC21N1.mdf;Integrated Security=True";
         //TODO: Adicionar arquivo do banco dentro do projeto e do git
-        public IEnumerable<AutorModel> GetAll(string search = null)
+        public IEnumerable<AutorModel> GetAll(
+            bool orderAscendant,
+            string search = null)
         {
             using var sqlConnection = new SqlConnection(ConnectionString);
             sqlConnection.Open();
@@ -29,6 +31,9 @@ namespace Infrastructure.Data.Repositories
                     .Add("@search", SqlDbType.NVarChar)
                     .Value = $"%{search}%";
             }
+
+            var order = orderAscendant ? "ASC" : "DESC";
+            commandText += $" ORDER BY Nome {order}";
 
             command.CommandType = CommandType.Text;
             command.CommandText = commandText;

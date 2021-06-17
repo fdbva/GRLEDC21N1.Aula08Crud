@@ -17,15 +17,17 @@ namespace Aula08Crud.Controllers
         }
 
         // GET: AutorController
-        public ActionResult Index(
-            string search = null)
+        public ActionResult Index(AutorIndexViewModel autorIndexRequest)
         {
-            var autores = _autorRepository.GetAll(search);
+            var autores = _autorRepository
+                .GetAll(autorIndexRequest.OrderAscendant, autorIndexRequest.Search)
+                .ToList();
 
             var autorIndexViewModel = new AutorIndexViewModel
             {
-                Search = search,
-                Autores = autores
+                Search = autorIndexRequest.Search,
+                Autores = autores,
+                OrderAscendant = autorIndexRequest.OrderAscendant
             };
 
             return View(autorIndexViewModel);

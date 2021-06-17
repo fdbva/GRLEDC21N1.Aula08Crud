@@ -6,7 +6,15 @@
 
 <h1>Search</h1>
 <form asp-action="Index">
-    <input type="text" value="@Model.Search" name="search"/>
+    <label>Busca:</label>
+    <input type="text" asp-for="@Model.Search" />
+    <br />
+    <label>Ordenação por Nome:</label>
+    <select asp-for="OrderAscendant">
+        <option value="@true">Ascendente</option>
+        <option value="@false">Descendente</option>
+    </select>
+    <br />
     <button>go!</button>
 </form>
 
@@ -45,32 +53,33 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Autores) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UltimoNome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nacionalidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantidadeLivrosPublicados)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nascimento)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Autores)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UltimoNome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nacionalidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuantidadeLivrosPublicados)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nascimento)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

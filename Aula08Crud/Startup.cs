@@ -15,7 +15,7 @@ namespace Aula08Crud
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration; //alteração exemplo commit git
         }
 
         public IConfiguration Configuration { get; }

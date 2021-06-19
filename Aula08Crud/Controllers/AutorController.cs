@@ -1,53 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Aula08Crud.Models;
-using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
+using Aula08Crud.ViewModels;
+using Infrastructure.Data;
+using Infrastructure.Data.Models;
+using Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aula08Crud.Controllers
 {
     public class AutorController : Controller
     {
-        private static List<AutorModel> Autores { get; } = new List<AutorModel>
+        private readonly AutorSqlServerRepository _autorRepository;
+
+        public AutorController()
         {
-            new AutorModel
-            {
-                Id = 0,
-                Nome = "Felipe",
-                UltimoNome = "Andrade",
-                Nacionalidade = "Brasileiro",
-                Nascimento = new DateTime(1988, 02, 23),
-                QuantidadeLivrosPublicados = 0
-            },
-            new AutorModel
-            {
-                Id = 1,
-                Nome = "Felipe2",
-                UltimoNome = "Andrade2",
-                Nacionalidade = "Brasileiro2",
-                Nascimento = new DateTime(2000, 02, 23),
-                QuantidadeLivrosPublicados = 0
-            }
-        };
+            _autorRepository = new AutorSqlServerRepository();
+        }
 
         // GET: AutorController
-        public ActionResult Index()
+        public ActionResult Index(AutorIndexViewModel autorIndexRequest)
         {
-            return View(Autores);
+            var autores = _autorRepository
+                .GetAll(autorIndexRequest.OrderAscendant, autorIndexRequest.Search)
+                .ToList();
+
+            var autorIndexViewModel = new AutorIndexViewModel
+            {
+                Search = autorIndexRequest.Search,
+                Autores = autores,
+                OrderAscendant = autorIndexRequest.OrderAscendant
+            };
+
+            return View(autorIndexViewModel);
         }
 
         // GET: AutorController/Details/5
         public ActionResult Details(int id)
         {
-            foreach (var autor in Autores)
+            var autor = _autorRepository.GetById(id);
+
+            if (autor != null)
             {
-                if (autor.Id == id)
-                {
-                    return View(autor);
-                }
+                return View(autor);
             }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -64,7 +59,7 @@ namespace Aula08Crud.Controllers
         {
             try
             {
-                Autores.Add(autorModel);
+                _autorRepository.Create(autorModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -77,16 +72,30 @@ namespace Aula08Crud.Controllers
         // GET: AutorController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var autor = _autorRepository.GetById(id);
+
+            if (autor != null)
+            {
+                return View(autor);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: AutorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(AutorModel autorModel)
         {
             try
             {
+                var autorEditado = _autorRepository.Edit(autorModel);
+
+                if (autorEditado != null)
+                {
+                    return RedirectToAction(nameof(Details), new { id = autorEditado.Id });
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -98,21 +107,30 @@ namespace Aula08Crud.Controllers
         // GET: AutorController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var autor = _autorRepository.GetById(id);
+
+            if (autor != null)
+            {
+                return View(autor);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: AutorController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeleteFromMemory(int id)
         {
             try
             {
+                _autorRepository.Delete(id);
+
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View("Error");
             }
         }
     }

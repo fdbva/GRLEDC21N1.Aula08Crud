@@ -1,4 +1,4 @@
-﻿@model Aula08Crud.Models.AutorModel
+﻿@model Infrastructure.Data.Models.AutorModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -49,7 +49,7 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="DeleteFromMemory" asp-route-id="@Model.Id">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

@@ -11,9 +11,10 @@ namespace Aula08Crud.Controllers
     {
         private readonly IAutorRepository _autorRepository;
 
-        public AutorController()
+        public AutorController(
+            IAutorRepository autorRepository)
         {
-            _autorRepository = new AutorSqlServerRepository();
+            _autorRepository = autorRepository;
         }
 
         // GET: AutorController

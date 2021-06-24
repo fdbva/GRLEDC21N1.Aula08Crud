@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Infrastructure.Data.Models;
+using Domain.Models;
 
 namespace Aula08Crud.ViewModels
 {

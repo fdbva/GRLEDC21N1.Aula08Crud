@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Aula08Crud.ViewModels;
-using Infrastructure.Data;
-using Infrastructure.Data.Models;
+using Domain.Interfaces.Repositories;
+using Domain.Models;
 using Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +9,7 @@ namespace Aula08Crud.Controllers
 {
     public class AutorController : Controller
     {
-        private readonly AutorSqlServerRepository _autorRepository;
+        private readonly IAutorRepository _autorRepository;
 
         public AutorController()
         {

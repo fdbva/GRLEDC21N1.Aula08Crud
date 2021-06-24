@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Infrastructure.Data.Models;
+using Domain.Interfaces.Repositories;
+using Domain.Models;
 
 namespace Infrastructure.Data.Repositories
 {
-    public class AutorInMemoryRepository
+    public class AutorInMemoryRepository : IAutorRepository
     {
         private static List<AutorModel> Autores { get; } = new List<AutorModel>
         {
@@ -31,6 +32,7 @@ namespace Infrastructure.Data.Repositories
         };
 
         public IEnumerable<AutorModel> GetAll(
+            bool orderAscendant,
             string search = null)
         {
             if (search == null)
@@ -42,6 +44,10 @@ namespace Infrastructure.Data.Repositories
                 .Where(x =>
                     x.Nome.Contains(search, StringComparison.OrdinalIgnoreCase) ||
                     x.UltimoNome.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+            resultByLinq = orderAscendant
+                ? resultByLinq.OrderBy(x => x.Nome).ThenBy(x => x.UltimoNome)
+                : resultByLinq.OrderByDescending(x => x.Nome).ThenByDescending(x => x.UltimoNome);
 
             return resultByLinq;
         }

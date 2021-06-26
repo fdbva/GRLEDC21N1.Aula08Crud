@@ -4,21 +4,25 @@ using System.Data;
 using Domain.Interfaces.Repositories;
 using Domain.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Data.Repositories
 {
     public class AutorSqlServerRepository : IAutorRepository
     {
-        private const string ConnectionString =
-            //@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=GRLEDC21N1sql;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\projects\GRLEDC21N1\Aula08Crud\Infrastructure.Data\AppData\GRLEDC21N1.mdf;Integrated Security=True";
-        //TODO: Adicionar arquivo do banco dentro do projeto e do git
+        private readonly string _connectionString;
+
+        public AutorSqlServerRepository(
+            IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("BibliotecaDatabase");
+        }
 
         public IEnumerable<AutorModel> GetAll(
             bool orderAscendant,
             string search = null)
         {
-            using var sqlConnection = new SqlConnection(ConnectionString);
+            using var sqlConnection = new SqlConnection(_connectionString);
             sqlConnection.Open();
 
             var command = sqlConnection.CreateCommand();
@@ -62,7 +66,7 @@ namespace Infrastructure.Data.Repositories
 
         public AutorModel GetById(int id)
         {
-            using var sqlConnection = new SqlConnection(ConnectionString);
+            using var sqlConnection = new SqlConnection(_connectionString);
             sqlConnection.Open();
 
             var command = sqlConnection.CreateCommand();
@@ -97,7 +101,7 @@ namespace Infrastructure.Data.Repositories
 
         public AutorModel Create(AutorModel autorModel)
         {
-            using var sqlConnection = new SqlConnection(ConnectionString);
+            using var sqlConnection = new SqlConnection(_connectionString);
             sqlConnection.Open();
 
             var command = sqlConnection.CreateCommand();
@@ -134,7 +138,7 @@ namespace Infrastructure.Data.Repositories
 
         public AutorModel Edit(AutorModel autorModel)
         {
-            using var sqlConnection = new SqlConnection(ConnectionString);
+            using var sqlConnection = new SqlConnection(_connectionString);
             sqlConnection.Open();
 
             var command = sqlConnection.CreateCommand();
@@ -172,7 +176,7 @@ namespace Infrastructure.Data.Repositories
 
         public void Delete(int id)
         {
-            using var sqlConnection = new SqlConnection(ConnectionString);
+            using var sqlConnection = new SqlConnection(_connectionString);
             sqlConnection.Open();
 
             var command = sqlConnection.CreateCommand();

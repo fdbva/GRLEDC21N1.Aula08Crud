@@ -69,7 +69,7 @@ namespace Infrastructure.Data.Repositories
             var command = sqlConnection.CreateCommand();
 
             command.CommandType = CommandType.Text;
-            command.CommandText = "SELECT Id, Titulo, Isbn, Lancamento FROM Livro WHERE Id = @id;";
+            command.CommandText = "SELECT Id, Titulo, Isbn, Lancamento, AutorId FROM Livro WHERE Id = @id;";
 
             command.Parameters
                 .Add("@id", SqlDbType.Int)
@@ -88,7 +88,8 @@ namespace Infrastructure.Data.Repositories
                 Id = reader.GetFieldValue<int>(0),
                 Titulo = reader.GetFieldValue<string>(1),
                 Isbn = reader.GetFieldValue<string>(2),
-                Lancamento = reader.GetFieldValue<DateTime>(3)
+                Lancamento = reader.GetFieldValue<DateTime>(3),
+                AutorId = reader.GetFieldValue<int>(4),
             };
 
             return livro;
@@ -115,7 +116,7 @@ namespace Infrastructure.Data.Repositories
                 .Add("@isbn", SqlDbType.NVarChar)
                 .Value = livroModel.Isbn;
             command.Parameters
-                .Add("@lancamento", SqlDbType.NVarChar)
+                .Add("@lancamento", SqlDbType.DateTime2)
                 .Value = livroModel.Lancamento;
             command.Parameters
                 .Add("@autorId", SqlDbType.Int)

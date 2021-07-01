@@ -10,6 +10,7 @@ namespace Infrastructure.Crosscutting.IoC
             this IServiceCollection services)
         {
             services.AddSingleton<IAutorRepository, AutorSqlServerRepository>();
+            services.AddSingleton<ILivroRepository, LivroSqlServerRepository>();
         }
     }
 }
